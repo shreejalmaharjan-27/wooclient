@@ -144,7 +144,7 @@ class Category {
             throw new \Exception("The allowed options to use in display are {$allowedOrderByList}.");
         }
 
-        $query = http_build_query([
+        $httpRequest = \http_build_query([
             'page' => $page,
             'per_page' => $limit,
             'order' => $order,
@@ -153,7 +153,7 @@ class Category {
         ]);
 
 
-        return $this->client->request("/products/categories?$query",null,'get');
+        return $this->client->request("/products/categories?$httpRequest",null,'get');
     }
 
 
@@ -168,5 +168,26 @@ class Category {
     {
         if(!$id) throw new \Exception('Unable to get Uncategorized Category by ID');
         return $this->client->request("/products/categories/$id");
+    }
+
+
+    /**
+     * Search for Category
+     *
+     * @param string $query Category you want to search for
+     * @param integer $page
+     * @param integer $limit
+     *
+     * @return array Categories
+     */
+    public function search(string $query, int $page = 1, int $limit = 10): array
+    {
+        $httpRequest = \http_build_query([
+            'search' => $query,
+            'page' => $page,
+            'per_page' => $limit
+        ]);
+
+        return $this->client->request("/products/categories/?$httpRequest");
     }
 }
