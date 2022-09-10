@@ -1,0 +1,18 @@
+{
+    "name": "shreejalmaharjan-27/wooclient",
+    "description": "A Woocommerce REST API client",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Shreejalmaharjan27\\Wooclient\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "shreejalmaharjan-27",
+            "email": "shreejal@rafled.com"
+        }
+    ],
+    "require": {}
+}
