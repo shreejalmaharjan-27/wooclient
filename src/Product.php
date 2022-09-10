@@ -58,7 +58,7 @@ class Product {
             ],
         ];
 
-        if ($this->client->request('/products',$json)) {
+        if ($this->client->request('/products',$json,'post')) {
             return true;
         } else {
             return false;

@@ -46,10 +46,11 @@ class WooClient {
      *
      * @param string $endpoint 
      * @param array $json
+     * @param string $type Type of request GET|POST
      *
      * @return array
      */
-    public function request(string $endpoint, array $json): array
+    public function request(string $endpoint, array $json = null, string $type = 'get'): array
     {
         $url = $this->store.$endpoint;
         $auth = base64_encode("{$this->key}:{$this->secret}");
@@ -62,10 +63,18 @@ class WooClient {
         $curl = curl_init($url);
 
         curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        switch (strtolower($type)) {
+            case 'post':
+                curl_setopt($curl, CURLOPT_POST, true);
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+                break;
+            
+            default:
+                // nothing needed for now
+                break;
+        }
 
         // bypasses selfsigend ssl (for developmenet purpose only)
         if ($this->dev) {
@@ -80,7 +89,7 @@ class WooClient {
         curl_close($curl);
         $data = json_decode($resp,true);
 
-        if($http_status != 201) {
+        if (!in_array($http_status, [200, 201])) {
             $this->error = $data;
             throw new \Exception($data['message']);
         }
