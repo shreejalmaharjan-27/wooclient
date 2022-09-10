@@ -58,7 +58,7 @@ class Category {
             "menu_order" => $menuOrder
         ];
 
-        $data = $this->client->request('/products/categories',$json);
+        $data = $this->client->request('/products/categories',$json,'post');
         return $data['id'];
     }
 
@@ -99,5 +99,74 @@ class Category {
                 throw new \Exception($e->getMessage());
             }
         }
+    }
+
+
+    /**
+     * Gets all Categories
+     *
+     * @param integer $page 
+     * @param integer $limit
+     * @param string $order
+     * @param string $orderBy
+     * @param boolean $hideEmpty
+     *
+     * @return array Categories
+     */
+    public function getAllCategories(
+        int $page = 1,
+        int $limit = 10,
+        string $order = 'asc',
+        string $orderBy = 'name',
+        bool $hideEmpty = false,
+    ): array {
+
+        $allowedOrder = [
+            'asc',
+            'desc'
+        ];
+        if (!\in_array(strtolower($order),$allowedOrder)) {
+            $allowedOrderList = implode(', ', $allowedOrder);
+            throw new \Exception("The allowed options to use in display are {$allowedOrderList}.");
+        }
+
+        $allowedOrderBy = [
+            'id',
+            'include',
+            'name',
+            'slug',
+            'term_group',
+            'description',
+            'count'
+        ];
+        if (!\in_array(strtolower($orderBy),$allowedOrderBy)) {
+            $allowedOrderByList = implode(', ', $allowedOrderBy);
+            throw new \Exception("The allowed options to use in display are {$allowedOrderByList}.");
+        }
+
+        $query = http_build_query([
+            'page' => $page,
+            'per_page' => $limit,
+            'order' => $order,
+            'orderby' => $orderBy,
+            'hide_empty' => $hideEmpty
+        ]);
+
+
+        return $this->client->request("/products/categories?$query",null,'get');
+    }
+
+
+    /**
+     * Gets a category By its ID
+     *
+     * @param integer $id
+     *
+     * @return array
+     */
+    public function getById(int $id): array
+    {
+        if(!$id) throw new \Exception('Unable to get Uncategorized Category by ID');
+        return $this->client->request("/products/categories/$id");
     }
 }
