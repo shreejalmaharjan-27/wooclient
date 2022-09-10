@@ -11,9 +11,9 @@ use Shreejalmaharjan27\Wooclient\WooClient;
 require __DIR__.'/vendor/autoload.php';
 ```
 
-### Create WooClient Object
+### Create WooClient Object (with trailing slash)
 ```php
-$wooclient = new WooClient("ck_xxxx,"cs_xxxx","https://wordpress.example.com/");
+$wooclient = new WooClient("ck_xxxxx,"cs_xxxxx","https://wordpress.example.com/");
 ```
 
 ### Create a Product
