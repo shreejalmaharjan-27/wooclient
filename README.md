@@ -1,5 +1,10 @@
 # A work in progress project to interact with Woocommerce REST API
 
+## Install
+```
+composer require shreejalmaharjan-27/wooclient
+```
+
 ## Usage
 ### Require composer autoload file and load classfiles
 ```php
