@@ -2,6 +2,8 @@
 
 namespace Shreejalmaharjan27\Wooclient;
 
+use FFI\Exception;
+
 class WooClient {
 
     private string $key;
@@ -91,7 +93,7 @@ class WooClient {
 
         if (!in_array($http_status, [200, 201])) {
             $this->error = $data;
-            throw new \Exception($data['message']);
+            throw new Exception($data['message']);
         }
 
         return $data;

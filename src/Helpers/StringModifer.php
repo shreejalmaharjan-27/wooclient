@@ -1,6 +1,6 @@
 <?php
 
-namespace Shreejalmaharjan27\Wooclient;
+namespace Shreejalmaharjan27\Wooclient\Helpers;
 
 class StringModifer {
 

@@ -2,7 +2,9 @@
 
 namespace Shreejalmaharjan27\Wooclient;
 
+use Shreejalmaharjan27\Wooclient\Helpers\AllowedMethods;
 use Shreejalmaharjan27\Wooclient\WooClient;
+use FFI\Exception;
 
 class Category {
 
@@ -35,16 +37,7 @@ class Category {
         string $display = 'default',
         int $menuOrder = null
     ): int {
-        $allowedDisplay = [
-            "default",
-            "products",
-            "subcategories",
-            "both"
-        ];
-        if(!in_array(strtolower($display), $allowedDisplay)) {
-            $allowedDisplayList = implode(', ', $allowedDisplay);
-            throw new \Exception("The allowed options to use in display are {$allowedDisplayList}.");
-        }
+        AllowedMethods::validate('category','display',$display);
 
         $json = [
             "name" => $name,
@@ -89,14 +82,14 @@ class Category {
         try {
             // try to create a category
             return $this->create($name,$description,$image,$slug,$parentCategory,$display,$menuOrder);
-        } catch(\Exception $e) {
+        } catch(Exception $e) {
 
             // check if the error is due to category already being available
             if ($this->client->error['code'] === 'term_exists') {
                 return $this->client->error['data']['resource_id'];
             } else {
                 // if not then throw the error that caused the error ◑﹏◐
-                throw new \Exception($e->getMessage());
+                throw new Exception($e->getMessage());
             }
         }
     }
@@ -121,28 +114,8 @@ class Category {
         bool $hideEmpty = false,
     ): array {
 
-        $allowedOrder = [
-            'asc',
-            'desc'
-        ];
-        if (!\in_array(strtolower($order),$allowedOrder)) {
-            $allowedOrderList = implode(', ', $allowedOrder);
-            throw new \Exception("The allowed options to use in display are {$allowedOrderList}.");
-        }
-
-        $allowedOrderBy = [
-            'id',
-            'include',
-            'name',
-            'slug',
-            'term_group',
-            'description',
-            'count'
-        ];
-        if (!\in_array(strtolower($orderBy),$allowedOrderBy)) {
-            $allowedOrderByList = implode(', ', $allowedOrderBy);
-            throw new \Exception("The allowed options to use in display are {$allowedOrderByList}.");
-        }
+        AllowedMethods::validate('category', 'order', $order);
+        AllowedMethods::validate('category', 'orderby', $orderBy);
 
         $httpRequest = \http_build_query([
             'page' => $page,
@@ -166,7 +139,7 @@ class Category {
      */
     public function getById(int $id): array
     {
-        if(!$id) throw new \Exception('Unable to get Uncategorized Category by ID');
+        if(!$id) throw new Exception('Unable to get Uncategorized Category by ID');
         return $this->client->request("/products/categories/$id");
     }
 

@@ -2,7 +2,11 @@
 
 namespace Shreejalmaharjan27\Wooclient;
 
+use Shreejalmaharjan27\Wooclient\Helpers\AllowedMethods;
+use Shreejalmaharjan27\Wooclient\Helpers\StringModifer;
+
 class Product {
+    
     protected WooClient $client;
 
     public function __construct(WooClient $client)
@@ -63,5 +67,80 @@ class Product {
         } else {
             return false;
         }
+    }
+
+
+    /**
+     * Gets all Products
+     *
+     * @param integer $page
+     * @param integer $limit
+     * @param string $order
+     * @param string $orderBy
+     * @param integer|null $category
+     * @param integer|null $tag
+     * @param string $status
+     * @param string $type
+     * @param boolean $featured
+     * @param boolean $onSale
+     * @param float|null $minPrice
+     * @param float|null $maxPrice
+     * @param string $stockStatus
+     * @param string|null $sku
+     * @param string|null $beforeDate
+     * @param string|null $afterDate
+     *
+     * @return array Products
+     */
+    public function getAllProducts(
+        int $page = 1,
+        int $limit = 10,
+        string $order = 'asc',
+        string $orderBy = 'date',
+        int $category = null,
+        int $tag = null,
+        string $status = 'any',
+        string $type = 'simple',
+        bool $featured = false,
+        bool $onSale = false,
+        float $minPrice = null,
+        float $maxPrice = null,
+        string $stockStatus = 'any',
+        string $sku = null,
+        string $beforeDate = null, 
+        string $afterDate = null
+    ): array {
+        $order = \strtolower($order);
+        $orderBy = \strtolower($orderBy);
+        $status = \strtolower($status);
+        $type = \strtolower($type);
+        $stockStatus = (\strtolower($stockStatus) == 'any') ? null : \strtolower($stockStatus);
+
+        AllowedMethods::validate('product','order',$order);
+        AllowedMethods::validate('product','orderby',$orderBy);
+        AllowedMethods::validate('product','status',$status);
+        AllowedMethods::validate('product','type',$type);
+        ($stockStatus ?? false) ?  AllowedMethods::validate('product','stock_status',$stockStatus) : '';
+
+        $httpRequest = \http_build_query([
+            'page' => $page,
+            'per_page' => $limit,
+            'order' => $order,
+            'order_by' => $orderBy,
+            'category' => strval($category),
+            'tag' => strval($tag),
+            'status' => $status,
+            'type' => $type,
+            'featured' => $featured,
+            'on_sale' => $onSale,
+            'min_price' => $minPrice,
+            'max_price' => $maxPrice,
+            'stock_status' => $stockStatus,
+            'sku' => $sku,
+            'before' => $beforeDate,
+            'after' => $afterDate
+        ]);
+
+        return $this->client->request("/products?$httpRequest");
     }
 }
