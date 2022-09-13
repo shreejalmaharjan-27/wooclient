@@ -14,5 +14,8 @@
             "email": "shreejal@rafled.com"
         }
     ],
-    "require": {}
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=8.0"
+    }
 }
