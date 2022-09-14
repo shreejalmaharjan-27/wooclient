@@ -45,7 +45,7 @@ class Review {
             'rating' => $rating
         ];
 
-        if($this->client->request('/products/reviews',$json,'post')) return true;
+        if($this->client->request('/products/reviews',$json)) return true;
 
         return false;
     }
