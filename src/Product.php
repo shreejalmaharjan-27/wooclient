@@ -24,6 +24,7 @@ class Product {
      * @param string|null $image Product Image
      * @param integer $category Product Category ID
      * @param string $type Product Type
+     * @param array $attributes Product Attributes [ ['name' => ..., 'options' => [...]] ]
      *
      * @return boolean
      */
@@ -35,7 +36,7 @@ class Product {
         string $image = null,
         int $category = 0,
         string $type = 'simple',
-
+        array $attributes = []
     ): bool {
         if(
             $shortDescription ?? false
@@ -60,9 +61,10 @@ class Product {
                     'src' => $image ?? $this->client->wp."wp-content/uploads/woocommerce-placeholder.png"
                 ]
             ],
+            'attributes' => $attributes
         ];
 
-        if ($this->client->request('/products',$json,'post')) {
+        if ($this->client->request('/products',$json)) {
             return true;
         } else {
             return false;
