@@ -51,7 +51,7 @@ class Category {
             "menu_order" => $menuOrder
         ];
 
-        $data = $this->client->request('/products/categories',$json,'post');
+        $data = $this->client->request('/products/categories',$json);
         return $data['id'];
     }
 
