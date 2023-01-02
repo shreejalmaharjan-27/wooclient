@@ -45,13 +45,24 @@ class Product {
             $shortDescription = StringModifer::truncate($description,20);
         }
 
+        $categories = [];
+
+        if ($category ?? false) {
+            foreach($category as $cat) {
+                $categories[] = [
+                    'id'=>$cat
+                ];
+            }
+        }
+        
+
         $json = [
             "name" => $name,
             "type" => $type,
             "regular_price" => strval($price),
             "description" => $description,
             "short_description" => $shortDescription,
-            "categories" => $category,
+            "categories" => $categories,
             "images" => [
                 [
                     'src' => $image ?? $this->client->wp."wp-content/uploads/woocommerce-placeholder.png"
