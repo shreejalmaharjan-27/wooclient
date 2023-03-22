@@ -3,6 +3,7 @@
 namespace Shreejalmaharjan27\Wooclient;
 
 use Shreejalmaharjan27\Wooclient\Helpers\AllowedMethods;
+use Shreejalmaharjan27\Wooclient\Helpers\NumberModifier;
 use Shreejalmaharjan27\Wooclient\Helpers\StringModifer;
 
 class Product {
@@ -142,8 +143,8 @@ class Product {
             'type' => $type,
             'featured' => $featured,
             'on_sale' => $onSale,
-            'min_price' => $minPrice,
-            'max_price' => $maxPrice,
+            'min_price' => NumberModifier::floatZeroIfZero($minPrice),
+            'max_price' => NumberModifier::floatZeroIfZero($maxPrice),
             'stock_status' => $stockStatus,
             'sku' => $sku,
             'before' => $beforeDate,
