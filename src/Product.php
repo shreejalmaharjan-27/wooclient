@@ -223,5 +223,34 @@ class Product {
         return $this->client->request("/products/$id", $attribute, 'POST');
     }
 
+    /**
+     * Updates regular price of a product
+     *
+     * @param integer $id Product ID
+     * @param float $price new Product Price
+     *
+     * @return array
+     */
+    public function updatePrice(int $id, float $price): array
+    {
+        return $this->update($id, [
+            'regular_price'=>"$price"
+        ]);
+    }
+
+    /**
+     * Updates sale price of a product
+     *
+     * @param integer $id Product ID
+     * @param float $price Sale Price **MUST** be lower than the regular price 
+     *
+     * @return array
+     */
+    public function updateSalePrice(int $id, float $price): array
+    {
+        return $this->update($id, [
+            'sale_price'=>"$price"
+        ]);
+    }
 
 }
