@@ -155,15 +155,59 @@ class Product {
     }
 
     /**
-     * Get products that do not have a price
+     * Get products without a price
      *
-     * @param integer $limit Number of items to get
+     * @param integer $limit
+     * @param integer $page
+     * @param string $order
+     * @param string $orderBy
+     * @param integer|null $category
+     * @param integer|null $tag
+     * @param string $status
+     * @param string $type
+     * @param boolean $featured
+     * @param boolean $onSale
+     * @param string $stockStatus
+     * @param string|null $sku
+     * @param string|null $beforeDate
+     * @param string|null $afterDate
      *
      * @return array
      */
-    public function getProductsWithoutPrice(int $limit = 100): array
-    {
-        return $this->getAllProducts(maxPrice: 0.000001, minPrice: 0.00, limit: $limit);
+    public function getProductsWithoutPrice(
+        int $limit = 100,
+        int $page = 1,
+        string $order = 'asc',
+        string $orderBy = 'date',
+        int $category = null,
+        int $tag = null,
+        string $status = 'any',
+        string $type = 'simple',
+        bool $featured = false,
+        bool $onSale = false,
+        string $stockStatus = 'any',
+        string $sku = null,
+        string $beforeDate = null, 
+        string $afterDate = null
+    ): array {
+        return $this->getAllProducts(
+            page: $page, 
+            limit: $limit, 
+            order: $order, 
+            orderBy: $orderBy, 
+            category: $category, 
+            tag: $tag, 
+            status: $status,
+            type: $type,
+            featured: $featured,
+            onSale: $onSale,
+            maxPrice: 0.000001, 
+            minPrice: 0.00,
+            stockStatus: $stockStatus,
+            sku: $sku,
+            beforeDate: $beforeDate,
+            afterDate: $afterDate
+        );
     }
-    
+
 }
