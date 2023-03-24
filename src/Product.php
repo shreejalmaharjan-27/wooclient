@@ -143,8 +143,8 @@ class Product {
             'type' => $type,
             'featured' => $featured,
             'on_sale' => $onSale,
-            'min_price' => NumberModifier::floatZeroIfZero($minPrice),
-            'max_price' => NumberModifier::floatZeroIfZero($maxPrice),
+            'min_price' =>  isset($minPrice) ? NumberModifier::floatZeroIfZero($minPrice) : $minPrice,
+            'max_price' => isset($maxPrice) ? NumberModifier::floatZeroIfZero($maxPrice) : $maxPrice,
             'stock_status' => $stockStatus,
             'sku' => $sku,
             'before' => $beforeDate,
@@ -209,5 +209,19 @@ class Product {
             afterDate: $afterDate
         );
     }
+
+        /**
+     * Update a product attribute
+     *
+     * @param integer $id Product ID
+     * @param array $attribute Attribute to update
+     *
+     * @return array
+     */
+    public function update(int $id, array $attribute): array
+    {
+        return $this->client->request("/products/$id", $attribute, 'POST');
+    }
+
 
 }
