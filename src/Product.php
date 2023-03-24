@@ -153,4 +153,17 @@ class Product {
 
         return $this->client->request("/products?$httpRequest");
     }
+
+    /**
+     * Get products that do not have a price
+     *
+     * @param integer $limit Number of items to get
+     *
+     * @return array
+     */
+    public function getProductsWithoutPrice(int $limit = 100): array
+    {
+        return $this->getAllProducts(maxPrice: 0.000001, minPrice: 0.00, limit: $limit);
+    }
+    
 }
